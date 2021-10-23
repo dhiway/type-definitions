@@ -1,0 +1,25 @@
+{
+  "name": "@cordnetwork/type-definitions",
+  "repository": "https://github.com/dhiway/type-definitions",
+  "description": "type definitions for cord",
+  "main": "./lib/index.js",
+  "files": [
+    "/lib"
+  ],
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc",
+    "generate-types": "ts-node scripts/generate-types.ts"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": "https://github.com/dhiway/type-definitions/issues",
+  "homepage": "https://github.com/dhiway/type-definitions#readme",
+  "devDependencies": {
+    "@polkadot/types": "^6.4.3-7",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.3.5"
+  },
+  "version": "0.1.0"
+}

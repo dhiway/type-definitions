@@ -1,0 +1,48 @@
+name: release
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    if: "! startsWith(github.event.head_commit.message, '[CI Skip]')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+          registry-url: "https://registry.npmjs.org"
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Build package
+        run: yarn run build
+      - name: Publish to NPM
+        run: npm publish --tag latest
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  generate-types:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.REPO_COMMIT_ACCESS_TOKEN }}
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+          registry-url: "https://registry.npmjs.org"
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Generate type definitions
+        run: yarn generate-types
+      - name: Commit new type definitions
+        run: |
+          git config --local user.name "Github Action"
+          git config --local user.email "action@github.com"
+          git add .
+          git commit -m "[CI Skip] ci: generate type definitions" -n
+          git push
