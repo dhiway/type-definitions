@@ -1,7 +1,7 @@
 # type-definitions
 
-CORD's type definitions for Polkadot.js
+CORD's type definitions
 
 ## Generate the type definitions
 
-To generate the type definitions, run `yarn generate-types` from the project root. It will generate all the type definitions and save them in the `types` directory each with the name `types/types<version>.json`, for examples `types/types3.json`.
+To generate the type definitions, run `yarn generate` from the project root. It will generate all the type definitions and save them in the `json directory each with the name `types.json`.
