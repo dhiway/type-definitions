@@ -1,19 +1,45 @@
-import type { OverrideBundleDefinition } from "@polkadot/types/types";
+import base from "./base";
+import entity from "./entity";
+import schema from "./schema";
+import stream from "./stream";
+import {
+  jsonrpcFromDefs,
+  typesAliasFromDefs,
+  typesFromDefs,
+} from "@open-web3/orml-type-definitions/utils";
+import networkTreasury from "./networkTreasury";
 
-import { types03 } from "./types_03";
-import { types05 } from "./types_05";
+export const cordTypes = {
+  base,
+  entity,
+  schema,
+  stream,
+  networkTreasury,
+};
 
-export { types03, types05 };
+export const types = {
+  ...typesFromDefs(cordTypes),
+};
 
-export const typeBundleForPolkadot: OverrideBundleDefinition = {
+export const rpc = jsonrpcFromDefs(cordTypes);
+export const typesAlias = typesAliasFromDefs(cordTypes);
+
+const bundle = {
+  rpc,
   types: [
     {
-      minmax: [3, 4],
-      types: types03,
-    },
-    {
-      minmax: [5, undefined],
-      types: types05,
+      minmax: [undefined, undefined] as any,
+      types: {
+        ...types,
+      },
     },
   ],
+  alias: typesAlias,
+};
+
+// Type overrides have priority issues
+export const typesBundleForPolkadot = {
+  spec: {
+    cord: bundle,
+  },
 };
